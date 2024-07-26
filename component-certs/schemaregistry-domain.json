@@ -1,0 +1,25 @@
+{
+    "CN": "sr",
+    "hosts": [
+        "schemaregistry",
+        "sr",
+        "schemaregistry.confluent-dev.svc",
+        "schemaregistry.confluent-dev.svc.cluster.local",
+        "*.schemaregistry.confluent-dev",
+        "*.schemaregistry.confluent-dev.svc.cluster.local",
+        "*.confluent-dev.svc.cluster.local"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "Virginia",
+            "O": "smartbase",
+            "OU": "smartbase Root CA",
+            "ST": "VA"
+        }
+    ]
+}

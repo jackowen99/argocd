@@ -1,0 +1,24 @@
+{
+  "CN": "kafka",
+  "hosts": [
+    "kafka",
+    "kafka.confluent-dev.svc",
+    "kafka.confluent-dev.svc.cluster.local",
+    "*.kafka.confluent-dev",
+    "*.kafka.confluent-dev.svc.cluster.local",
+    "*.confluent-dev.svc.cluster.local"
+   ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+       "C": "US",
+       "L": "Virginia",
+       "O": "smartbase",
+       "OU": "smartbase Root CA",
+       "ST": "VA"
+    }
+  ]
+}

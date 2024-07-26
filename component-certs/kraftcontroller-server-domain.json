@@ -1,0 +1,24 @@
+{
+    "CN": "kraftcontroller",
+    "hosts": [
+        "kraftcontroller",
+        "kraftcontroller.confluent-dev.svc",
+        "kraftcontroller.confluent-dev.svc.cluster.local",
+        "*.kraftcontroller.confluent-dev",
+        "*.kraftcontroller.confluent-dev.svc.cluster.local",
+        "*.confluent-dev.svc.cluster.local"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "Virginia",
+            "O": "smartbase",
+            "OU": "eda",
+            "ST": "VA"
+        }
+    ]
+}

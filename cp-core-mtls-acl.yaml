@@ -1,0 +1,89 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  name: kraftcontroller
+  namespace: confluent-dev
+spec:
+  replicas: 1
+  image:
+    application: 000451337248.dkr.ecr.us-gov-east-1.amazonaws.com/confluentinc/cp-server:7.6.1
+    init: 000451337248.dkr.ecr.us-gov-east-1.amazonaws.com/confluentinc/confluent-init-container:2.8.2
+  dataVolumeCapacity: 10Gi
+  podTemplate:
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+    podSecurityContext:
+      runAsUser: 1000
+      fsGroup: 1000
+      runAsNonRoot: true 
+  listeners:
+    controller:
+      authentication: 
+        type: mtls
+        principalMappingRules:
+          - RULE:^.*CN=([a-zA-Z0-9.]*).*$/$1/L          
+      tls:
+        enabled: true
+  tls:
+    secretRef: kraftcontroller-tls
+  authorization:
+    type: simple 
+    superUsers:
+      - User:kraftcontroller;User:kafka
+  license:
+    globalLicense: true  
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: confluent-dev
+spec:
+  replicas: 3
+  image:
+    application: 000451337248.dkr.ecr.us-gov-east-1.amazonaws.com/confluentinc/cp-server:7.6.1
+    init: 000451337248.dkr.ecr.us-gov-east-1.amazonaws.com/confluentinc/confluent-init-container:2.8.2
+  dataVolumeCapacity: 10Gi
+  configOverrides:
+    jvm:
+      - "-Xms1G -Xmx1G"
+    #server:
+    # - authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+  podTemplate:
+    podSecurityContext:
+      runAsUser: 1000
+      fsGroup: 1000
+      runAsNonRoot: true
+  listeners:
+    #internal:
+    #  authentication:
+    #    type: mtls
+    #    principalMappingRules:
+    #      - RULE:^.*CN=([a-zA-Z0-9.]*).*$/$1/L
+    external:
+      authentication: 
+        type: mtls
+        principalMappingRules:
+          - RULE:^.*CN=([a-zA-Z0-9.]*).*$/$1/L 
+      tls:
+        enabled: true         
+  tls:
+    secretRef: kafka-tls
+  license:
+    globalLicense: true 
+  authorization:
+    type: simple 
+    superUsers:
+      - User:kraftcontroller;User:kafka    
+  dependencies:
+    kRaftController:
+      controllerListener:
+        authentication: 
+          type: mtls
+        tls:
+          enabled: true         
+      clusterRef:
+        name: kraftcontroller
+---       
